@@ -1,0 +1,8 @@
+cython
+intel-openmp
+openmp
+pandas
+numpy
+matplotlib
+ipykernel
+yfinance

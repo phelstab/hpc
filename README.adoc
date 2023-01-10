@@ -1,0 +1,223 @@
+//### own attributes ###
+:ComponentName: Scientific Computing
+:SystemName: High performance computing 
+
+
+//### Asciidoc attributes ####
+
+:toc: preamble
+:doctype: book
+:encoding: utf-16
+:lang: de
+:numbered: 
+:toclevels: 5
+:sectnums:
+:sectnumlevels: 5
+:icons: font
+:hardbreaks:
+:nofooter:
+
+:imagesdir: images/
+:logo: image:hft.png[100,100] 
+
+
+:title-logo-image: {logo}
+
+:toc-title: Table of contents
+
+// Formats source code samples starting with [source, xml] .... code .... 
+:source-highlighter: highlight.js
+
+// Do not make any changes here!
+
+= {ComponentName} / {SystemName} 
+
+
+{logo}
+
+// Do not make any changes here!
+
+Document information
+[cols="1,1"]
+|===
+|Document Type{set:cellbgcolor:#b32929}
+|Concept{set:cellbgcolor:none}
+
+|Author{set:cellbgcolor:#b32929}
+|Paul H. {set:cellbgcolor:none}
+
+|Target groups{set:cellbgcolor:#b32929}
+|-{set:cellbgcolor:none}
+
+|Status{set:cellbgcolor:#b32929}
+|Work in progress{set:cellbgcolor:none}
+
+|Classification of Information{set:cellbgcolor:#b32929}
+|Open Source{set:cellbgcolor:none}
+
+|Location{set:cellbgcolor:#b32929}
+|GitHub{set:cellbgcolor:none}
+|===
+
+
+Change History
+[cols="1,1,1,1"]
+|===
+|Version{set:cellbgcolor:#b32929}
+|Date{set:cellbgcolor:#b32929}
+|Author{set:cellbgcolor:#b32929}
+|Change{set:cellbgcolor:#b32929}
+
+|1.0 {set:cellbgcolor:none}
+|11.12.2022
+|phelstab
+|init
+|===
+
+
+References
+[cols="1,1,1"]
+|===
+|Title {set:cellbgcolor:#b32929}
+|DOI{set:cellbgcolor:#b32929}
+|Source {set:cellbgcolor:#b32929}
+
+|Example{set:cellbgcolor:none}
+|-
+|https://example.org
+
+|===
+
+
+
+== Introduction
+Lorem
+
+
+== Description
+=== Python Implementation Installation
+
+```sh
+# Python 3.7 recommended
+# Update pip and create venv with example name lambda
+python -m pip install --upgrade pip
+python -m venv lambda
+
+# Activate venv on Linux
+source lambda/bin/activate
+
+# Activate venv on Windows
+.\lambda\Scripts\activate
+
+# Activate venv on mac and without and with fishshell
+source lambda/bin/activate
+. lambda/bin/activate.fish
+
+# Install libs
+pip install -r requirements.txt
+pip install -r requirements-dev.txt
+
+# Optional installs
+pip install ipykernel
+python -m ipykernel install --user --name=lambda
+
+# Run and install in root folder
+pip install -e .
+```
+
+=== C Implementation Installation
+
+```sh
+# Lorem Ipsum
+
+```
+
+
+=== Conventions
+
+The following conventions are used in the document and are specially marked:
+
+[NOTE]
+*Note*
+
+[WARNING]
+*Warning*
+
+[IMPORTANT]
+*Important*
+
+#*@todo* - …#
+
+
+** Todos are marked accordingly and usually highlighted in yellow. There should be no more todos in the final version.
+
+
+// ====
+// [NOTE]
+// Example
+// ====
+// [cols="1"]
+// |===
+// |Caution:{set:cellbgcolor:#b32929}
+
+// |Lorem Ipsum{set:cellbgcolor:none}
+// |===
+
+// [cols="1"]
+// |===
+// |@todo:{set:cellbgcolor:#b32929}
+
+// |Current representation will be inserted when final version is set.{set:cellbgcolor:none}
+// |===
+
+=== Architecture
+
+
+[#Figure1]
+.Inspiration for this Project
+image::Idea.png[]
+
+- Implementation in Seqeuential C and Sequential Python
+- Implementation in High Performance C and High Performance Python
+- Vectorization of the HHI calculation
+- Sequential parts with SIMD intrinsics
+- csv ascii data vs HDF5 data
+- try to optimize memory access
+- try to optimize cache access
+- Parallelization with OpenMP and MPI (Show in Directed Acyclic Graphs) 
+- Possible use of OpenCL computation
+- Benchmarking of the different implementations
+
+// **#Example 1(#****#<here overview diagram as PlantUML>)****:#**
+
+
+
+// #The following form of representation can be used:#
+// [#Table1]
+// .Configuration parameters
+// [cols="1,1,1,1"]
+// |===
+// |Parameter{set:cellbgcolor:#b32929}
+// |Value rangeExpression{set:cellbgcolor:#b32929}
+// |Intend {set:cellbgcolor:#b32929}
+// |Example {set:cellbgcolor:#b32929}
+
+// |MinMaxParameter{set:cellbgcolor:none}
+// |-1 to 9999{set:cellbgcolor:none}
+// |Used in the [Component] for setting the lower / upper limit. The separator between minimum and maximum is the pipe symbol ‚\|‘{set:cellbgcolor:none}
+// |<MinMaxParameter>1\|999</MinMaxParameter>{set:cellbgcolor:none}
+
+// |{set:cellbgcolor:none}
+// |{set:cellbgcolor:none}
+// |{set:cellbgcolor:none}
+// |{set:cellbgcolor:none}
+// |===
+
+
+== Appendix
+
+**List of Figures**
+Figure 1: <<Figure1>>
+
+**List of tables**
+// Table 1: <<Table1>>

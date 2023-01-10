@@ -1,0 +1,73 @@
+# import cython
+# from cython.parallel import parallel, prange
+# from libc.stdlib cimport abort, malloc, free
+
+# # Declare that this function will be executed in parallel
+# @cython.boundscheck(False) # Deactivate bounds checking.
+# @cython.wraparound(False) # Deactivate negative indexing. 
+# def simulate_prices(int thread_id, int simulations_per_thread, double vola, int num_days, double last_price):
+#     cdef int x, count
+#     cdef double price
+#     cdef list price_series, sim_array
+#     sim_array = []
+#     for x in range(simulations_per_thread):
+#         price_series = []
+#         count = 0        
+#         price = last_price * (1 + rndm_normal(0, vola))  
+#         price_series.append(price)
+#         while count < num_days - 1:
+#             price = price_series[count] * (1 + rndm_normal(0, vola))
+#             price_series.append(price)
+#             count += 1
+#         sim_array.append(price_series)
+#     return sim_array
+
+
+
+
+# def run_2(close_list, num_sim, n_days, l_price):
+#     # Divide the number of simulations evenly among the threads
+#     simulations_per_thread = num_sim // 4
+#     returns = get_pct_change(close_list)
+#     cdef double vola = get_standard_deviation(returns)
+#     cdef int num_days = n_days
+#     cdef double last_price = l_price
+
+#     # Start the threads
+#     sim_array = []
+#     for i in range(4):
+#         sim_array.extend(simulate_prices(i, simulations_per_thread, vola, num_days, last_price))
+
+
+
+
+
+
+
+# import multiprocessing as mp
+
+# def run_2(close_list, num_sim, num_days, last_price, threads):
+#     # Divide the number of simulations evenly among the threads
+#     simulations_per_thread = num_sim // num_threads
+#     # Create a queue to hold the results
+#     result_queue = mp.Queue()
+#     # Start the threads
+#     threads = []
+#     for i in range(num_threads):
+#         t = mp.Process(target=simulate_prices, args=(i, simulations_per_thread, result_queue))
+#         threads.append(t)
+#         t.start()
+
+#     # Wait for all threads to finish
+#     for t in threads:
+#         t.join()
+
+#     # Combine the results from the queue into a single list
+#     sim_array = []
+#     for i in range(num_threads):
+#         sim_array.extend(result_queue.get())
+
+#     return sim_array
+
+
+
