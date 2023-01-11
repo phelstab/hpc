@@ -186,8 +186,8 @@ cpdef run(close_list, int num_sim, int num_days, double last_price):
 
     # count time for this loop
     start = time.perf_counter()
-    # double precision making troubles, so we use float32
     #s_a = parallel_outer_loop(s_randoms, np.double(last_price), np.int32(num_days), np.int32(num_sim))
+    # double precision making troubles, so we use float32
     s_a = parallel_outer_loop(s_randoms, np.float32(last_price), np.int32(num_days), np.int32(num_sim))
 
     print("Time taken for opencl compute: ", (time.perf_counter() - start))

@@ -1,6 +1,6 @@
 //### own attributes ###
-:ComponentName: Scientific Computing
-:SystemName: High-performance computing 
+:ComponentName: High-performance computing
+:SystemName: Scientific Computing
 
 
 //### Asciidoc attributes ####
@@ -19,7 +19,6 @@
 :hide-uri-scheme:
 :imagesdir: images/
 :logo: image:hft.png[100,100] 
-
 
 :title-logo-image: {logo}
 
@@ -41,10 +40,10 @@ Document information
 [cols="1,1"]
 |===
 |Document Type{set:cellbgcolor:#b32929}
-|HPC concept{set:cellbgcolor:none}
+|Dokumentation Anwendung{set:cellbgcolor:none}
 
 |Author{set:cellbgcolor:#b32929}
-|Paul H. {set:cellbgcolor:none}
+|phelstab{set:cellbgcolor:none}
 
 |Target groups{set:cellbgcolor:#b32929}
 |-{set:cellbgcolor:none}
@@ -103,19 +102,21 @@ References and helpful links
 
 
 == Motivation
-Die Motivation für das Modul HPC stammt aus meiner aktuellen Bachelor thesis, die sich mit dem Thema __Agenten basierte interaktive diskrete event simulationen für die untersuchung von auftrenden deterministische anomalien auf referenzmärkten mit unterschiedlichen marktplatz gebühren__, beschäftigt. Marcos Lopez de Prado, ein Quantitative Finance Professor an der University of California, San Diego, spricht in seinem Buch Advances in Financial Machine Learning davon, dass quantitative finance als eines der am schnellsten an Bedeutung gewinnenden Disziplinen in der Finanzwelt angesehen wird, da es immer weniger menschliche Entscheidungen in der Finanzwelt gibt. Firmen wie Citadel, Optiver, Two Sigma, Jane Street, etc. sind nur einige der Firmen, die sich mit quantitative finance beschäftigen und daraus Milliardengewinne erzielen. Dabei ist High Frequency Trading (HFT) ein sehr wichtiger Teil der quantitative finance und wird von diesen Firmen genutzt, um Gewinne zu erzielen mit der Strategie, dass schneller zu sein als andere es sind (see link:https://youtu.be/8uAW5FQtcvE[HPC bei Optiver]) oder sehr großen Schaden innerhalb von wenigen Sekunden zu verursachen .
+Die Motivation für das Modul HPC kam unter anderem bezüglich meines Bachelor Thesis Themas, das sich mit Agenten-basierten diskreten Event Simulationen zur Untersuchung von auftretenden deterministischen Anomalien auf Referenzmärkten beschäftigt. Marcos Lopez de Prado, ein quantitative finance Professor an der University of California, San Diego, spricht in seinem Buch "Advances in Financial Machine Learning" davon, dass quantitative finance als eines der am schnellsten an Bedeutung gewinnenden Disziplinen in der Finanzwelt angesehen wird, da es immer weniger menschliche Entscheidungen in der Finanzwelt gibt. Firmen wie Citadel, Optiver, Two Sigma, Jane Street, etc. sind nur einige der Firmen, die sich mit quantitative finance beschäftigen um damit Milliardengewinne zu erzielen (link:https://youtu.be/2u007Msq1qo?t=55[Einblick]). Dabei ist High-Frequency Trading (HFT) ein sehr wichtiger Teil der quantitative finance und wird von Market Maker und Hedgefunds genutzt, um unter anderem Arbitragegewinne durch Zeitvorteile zu erzielen (gutes Buch bezüglich dieser Revolution link:https://en.wikipedia.org/wiki/Flash_Boys[Flash Boys]). Das Wettrennen schneller zu sein als andere durch performanteren Code (see link:https://youtu.be/8uAW5FQtcvE[HPC bei Optiver]) oder embedded programming von Strategien auf ASIC's, finde ich hoch spannend, da es meiner Meinung bei vielen Unternehmen als nicht mehr als allzu wichtig gesehen wird, da Leistung günstig geworden ist.
 
-Monte Carlo Simulationen sind ein wichtiges Tooling für Quants und wird besonders im Risikomanagement verwendet, da sie es ermöglichen Risiken simulativ, zu quantifizieren und somit schnelle Entscheidungen treffen besonders auf Märkten die sich sehr schnell bewegen.  wenn Personen wie z. B. Navinder Singh Sarao die Möglichkeit erhalten (see link:https://de.wikipedia.org/wiki/Flash_Crash[HPC bei Optiver]), ist es wichtig, dass die Monte Carlo Simulation eine hochperformante durchlaufzeit erzielt.
+Monte Carlo Simulationen sind ein wichtiges Tooling für Quants und werden vor allem im Risikomanagement verwendet, da sie es ermöglichen, Risiken simulativ zu quantifizieren und schnell Entscheidungen getroffen werden können, besonders in hochvolatilen Märkten wie es der Fall Navinder Singh Sarao (see link:https://de.wikipedia.org/wiki/Flash_Crash[Flash Crash]) 2010 gezeigt hat. Dabei ist es besonders wichtig, dass die Monte Carlo Simulation eine hochperformante Runtime erzielt, um auch auf kleinen Zeitreihen Einblicke zu ermöglichen.
+
+Die weitere Motivation für mich war DeepMind's AlphaTensor mit dem sie den Strassen Algorithmus nach 50 Jahren als performantesten Algorithmus zur Matrixmultiplikation ablösten und dass statt eines mathematischen Beweises über eine Reinforcement Learning Simulation (see link:https://www.deepmind.com/blog/discovering-novel-algorithms-with-alphatensor[DeepMind], link:https://github.com/deepmind/alphatensor[GitHub], link:https://www.nature.com/articles/s41586-022-05172-4[Nature]).
 
 
 
 
 == Definition und Problemstellung
-Python bietet dabei die Möglichkeit, sehr schnell Code zu schreiben und durch Bibliotheken wie matplotlib und plotly sehr schnell visualisieren zu können. Allerdings ist Python nicht für HPC (GIL lässt nur ein Thread parallel ausführen) und somit auch nicht für HFT geeignet. Durch die Nutzung von Cython ist es möglich Python Code in C zu kompilieren und somit die Performance enorm zu steigern da zum einen Python Code precompiled ist und zum anderen durch die Nutzung von C, mit OpenMP, OpenCL, SIMD-Instruktionen, etc. hochperformant ausgeführt werden kann.
+Python bietet die Möglichkeit, schnell Softwarelösungen zu entwickeln und Daten mit Bibliotheken wie matplotlib und plotly einfach visualisieren zu können. Allerdings ist Python nicht für hochperformante Anwendungsbereiche (GIL, lässt nur ein Thread parallel ausführen) und somit auch nicht für z. B. Einsatzbereiche wie HFT Analysen und Strategien geeignet. Durch die Nutzung von Cython bekommt man die Vorteile aus beidem. Interpretiertes Python und Hardwarenahes C zusammengebracht und somit die Laufzeiteffizienz gesteigert. Über ein paar Umwege ist zusätzlich auch die Nutzung von HPC-Bibliotheken und Paradigmen wie z. B. OpenMP, OpenCL, SIMD-Instruktionen, etc. möglich.
 
-Aus diesem Grund wird durch dieses Projekt versucht die Vorteile der Cython Programmiersprache zu nutzen um die Performance von Monte Carlo Simulationen durch C code und HPC-Paradigmen zu steigern. Nach dem compute intensive Teil der Simulation, werden die Daten "zurück" in Python übergeben um dort mit den bekannten Python Bibliotheken weiter verarbeitet und visualisieren zu können.
+Als Beispiel möchte ich mit diesem Projekt diese Vorteile nutzen, um die Performance von Monte Carlo Simulationen durch hardwarenahes C und HPC-Paradigmen zu steigern. Dies möchte ich in der Theorie ermöglichen, indem ich den compute intensiven Teil auslagere in hochperformanten C code und anschließend die simulierten Daten zur Visualisierung in Python zurückgebe.
 
-=== Hardware specs
+=== Meine hardware specs
 *MacBook Pro 13" 2018*
 
 ```sh
@@ -193,94 +194,194 @@ python setup.py build_ext --inplace
 python main.py
 ```
 
+=== Asciidoc
+```sh
+# Asciidoc Vorlage erstellt von @phelstab
+# Erstellung eines PDFs aus der README.adoc
+asciidoctor-pdf README.adoc
+```
 == Lösungsansatz
-Lösungsansatz (1 Seite)
+Mein Lösungsansatz ist es, die Monte Carlo Simulation zunächst sehr quick and dirty in Python zu implementieren, um es anschließend im Step-by-Step Ansatz optimieren zu können. Zunächst habe ich eine Architektur entwickelt, in dem sich Monte-Carlo Simulationen basierend auf der Volatilität der letzten N Tagen eines Wertpapieres (daten von yahoo finance) mit dem Startwert den letzten gehandelten Preis (closing price) berechnen und plotten lassen.
 
 [#Figure1]
-// .Inspiration for this Project
-// image::Idea.png[]
+.Architektur der Anwendung und Simulation 
+image::Image1.png[]
 
-- Possible use of OpenCL 
-- Possible use of OpenMP
-- Possible use of SIMD-Intrinsics
-- C code optimization with GCC
-- c++ code optimization with GCC
-- Benchmarking of the different implementations
+*Die Grundlegende Formel einer Monte Carlo Simulation lautet (compute intensiver teil):*
+[source,subs=+quotes]
+----
+FOR x in RANGE(0, num_simulations, 1):: 
+    FOR y in RANGE(0, (num_days - 1), 1)::
+        IF y == 0::
+            price[0] = last_traded_price * (1 + (random.normal(0, volatility)))
+        ELSE::
+            price[y] = price[y-1] * (1 + (random.normal(0, volatility)))
+        ENDIF::
+    ENDFOR::
+ENDFOR::
+----
 
-// **#Example 1(#****#<here overview diagram as PlantUML>)****:#**
+Dieser Teil ist der compute intensive Teil der Simulation und muss vollständig in C geschrieben sein, sodass verschiedene HPC-Paradigmen angewendet werden können, dadurch ist man zunächst einmal verpflicht, alle bekannten Pythonbibliotheken wie Numpy, Math, Time, etc. herunterzubrechen, um sie in C erneut zu implementieren. Die innere Schleife ist deterministisches Chaos und kann daher nicht parallelisiert werden.
 
+[#Figure6]
+.Durchlauf, Datenpunkte und plot der Simulation 
+image::simulation.png[]
 
+=== Benchmarking
+Als Benchmarking definiere ich die reine computation Zeit der Monte Carlo Simulation. Das bedeutet, ich übergebe an den Cython Wrapper die Anzahl der Tage, die simuliert werden sollen, die Anzahl der Simulationen, den letzten gehandelten Preis und eine Liste mit allen Preisen der letzten N Tage.
 
-// #The following form of representation can be used:#
-// [#Table1]
-// .Configuration parameters
-// [cols="1,1,1,1"]
-// |===
-// |Parameter{set:cellbgcolor:#b32929}
-// |Value rangeExpression{set:cellbgcolor:#b32929}
-// |Intend {set:cellbgcolor:#b32929}
-// |Example {set:cellbgcolor:#b32929}
-
-// |MinMaxParameter{set:cellbgcolor:none}
-// |-1 to 9999{set:cellbgcolor:none}
-// |Used in the [Component] for setting the lower / upper limit. The separator between minimum and maximum is the pipe symbol ‚\|‘{set:cellbgcolor:none}
-// |<MinMaxParameter>1\|999</MinMaxParameter>{set:cellbgcolor:none}
-
-// |{set:cellbgcolor:none}
-// |{set:cellbgcolor:none}
-// |{set:cellbgcolor:none}
-// |{set:cellbgcolor:none}
-// |===
+Sobald diese Parameter übergeben wurden, wird die Monte Carlo Simulation ausgeführt und die computation time gemessen, bis ein 2-dimensionaler Array mit den Simulationen von der Runtime Logik zurückgegeben wird und in Python mit Matplotlib geplotted werden kann.
 
 
 == Implementation
-Implementierung inklusive Schwierigkeiten (1-2 Seiten)
+*Die ersten Schritte die getan wurden:*
+
+. Entwicklung des Wrappers für die Monte Carlo Simulation in Python
+. Entwicklung der Monte Carlo Simulation in Python
+. Python optimierung
+. Cypthon wrapper für die Monte Carlo Simulation
+. Precompiling des Python codes in Cython über die .pyx (anschließend Benchmarking)
+. Python funktionen in natives C überführen
+
+Als ich dachte, den Code nahezu komplett in C überführt zu haben, tauchte das erste Problem mit der Berechnung des Zufalls auf. Da die Berechnung des Zufalls in C sehr komplex ist, habe ich mich dazu entschieden, die Berechnung des Zufalls so weit es geht, herunter zu brechen. Leider musste ich dabei auf die Systemnanosekunden Funktion von Python zurückgreifen, da ich keine andere Möglichkeit gefunden habe, um saubere Seeding für die Zufallszahlengenerierung hochperformant zu erhalten (meine C-Implementierung war zu langsam).
+
+Ein Versuch, den Zufall über CPP Header zu generieren, war leider nicht teilweise erfolgreich obwohl alle Funktionen sauber implementiert waren, geriet ich an irgendeiner Stelle in einen Infinite Loop und der Rechner freezed (ist als Codeleiche noch zu finden und kann gerne ausprobiert werden:D). Ich denke, dass ich dort allerdings sehr nah am Ziel war, allerdings meine CPP Kenntnisse noch nicht ausgereicht hatten, um das Problem in nicht wochenlanger Arbeit gelöst zu bekommen. Dennoch war es mir möglich, über einen Workaround auf CPP Code in Cython zurückzugreifen, was für zukünftige Projekte sehr hilfreich sein wird und sich mehr Zeit ergibt, sich damit ausgiebig zu beschäftigen.
+
+Da der Code allerdings vollständig in C überführt werden muss, um den GIL deaktivieren zu können, musste ich den ersten Kompromiss eingehen, die Zufälle local vorzugenerieren um diese dann im HPC Part für die Berechnung verwenden zu können. Dies kostet mich allerdings num_days * num_simulations an Iterationen.
+
+Anschließend wollte ich die Performance der Monte Carlo Simulation durch die Nutzung von 
+HPC-Paradigmen und Frameworks steigern. Dazu zähle ich in der Theorie z. B.:
+
+* Weitere C/CPP code optimierung durch 
+** Obsoleszieren von unnötigen Kopiervorgängen
+** Obsoleszieren von unnötigen Schleifen
+** Obsoleszieren von unnötigen Funktionen
+** Obsoleszieren von unnötigen Variablen
 
 
-=== Step by Step
+* OpenMP (Cython Cython.parallel Lib)
+** Parallelierung von Schleifen
+Konnte erfolgreich umgesetzt werden, allerdings kaum Performance Vorteile aufgrund von keiner verbesserten memory performance.
 
+* OpenCL (PyOpenCL)
+** Compute intensive Berechnungen auf der GPU (Memory vorteile ausnutzen)
+Erfolgreich umgesetzt, allerdings hatte ich mir single precision Probleme bei der Ergebnisqualität starke Probleme, daher läuft das ganze auf double precision und ist daher unnötige Arbeit gewesen, da wie wir Wissen, die meisten GPUs keine double precision unterstützen.
 
+* SIMD-Intrinsics
+** Berechnungen in Vektoren (z. B. 2x float oder 4x float) um die Performance zu steigern
 
-=== Problem Bibliothek
-
-* Der größte Bottleneck ist leider kaum HPC kompatibel aufgrund von deterministischem Chaos
-* Problem mit SIMD
-* Problem mit OpenMP
-* Problem mit MPI
-* Problem mit OpenCL
+Die verwendung von SIMD-Intrinsics ist an vielen stellen als Codeleiche zu finden. Allerdings gab es für mich bei diesem Ansatz keine sinvolle Möglichkeit SIMD-Intrinsics einzusetzen, da vektorisierung an vielen punkten keine performance Vorteil ergeben hätte da man die Values wieder aufwendig in Schleifen vorbereiten hätten müssen.
 
 == Bewertung
 Bewertung des Ansatzes und der performance-limitierenden Faktoren (1-2 Seiten)
 
 Besonders interessant war zu sehen das bestimmte Python Bibliotheken zu denen auch weit verbreitete Bibliotheken wie Numpy, Math etc. gehören ineffizient sind und sich durch Hardwarenahen C-code ersetzen lassen. 
 
+
+*Ergebnisse der definierten HPC paradigmen:*
+[#Table1]
+.Ergebnisstufen der optimierung
+[cols="1,1,1"]
+|===
+|Optimierungsstufe{set:cellbgcolor:#b32929}
+|Compute Zeit{set:cellbgcolor:#b32929}
+|Relational zum Ursprung{set:cellbgcolor:#b32929}
+
+
+|Interpretierter Python code{set:cellbgcolor:none}
+|4.2 - 4.5 sec
+|100%
+
+|Precompiled Cython code unoptimiert
+|3.6 - 3.8 sec
+|80%
+
+|Sequenzielles optimiertes C (80-90% C)
+|1.0 - 1.2 sec
+|25%
+
+|Optimiertes C (80-90%) + OMP 
+|#0.9 - 1 sec#
+|22%
+
+|Optimiertes C (80-90%) + OpenCL auf CPU (double precision)
+|2.5 - 2.6 sec
+|60%
+
+|Optimiertes C (80-90%) + OpenCL auf CPU (single precision)
+|Ergebnis nicht aussagekräftig
+|-
+
+|Optimiertes C (80-90%) + OpenCL auf GPU (single precision)
+|Ergebnis nicht aussagekräftig
+|-
+|===
+
+[#Figure2]
+.C optimierung seriell
+image::single_gcc_opt.png[]
+
+[#Figure3]
+.C optimierung parallel
+image::openmp.png[]
+
+
+Hier sieht man leider das Ergebnis der nach single precision (float32) formatierten Simulation. Ich kann es aus meiner Sicht nicht erklären und müsste stand jetzt tiefere Recherche betreiben, um die Ursache zu finden.
+[#Figure4]
+.OpenCL single precision problem
+image::single_precision_problem.png[]
+
+
+Hier sieht man wenig überraschend, dass es teuer ist, wenn OpenCL zunächst Buffern muss und die Daten auf die CPU kopiert. Es ist ein wenig ärgerlich bezüglich des Problems single precision problems, ich hätte gerne die Performance mit der GPU beobachtet, da ich denke, dass hier die Performance für diese Simulation vor allem im Hinblick auf Skalierung den größten Vorteil hätte.
+[#Figure5]
+.OpenCL double precision auf CPU
+image::opencl_cpu.png[]
+
 == Fazit
-Wir haben durch das Projekt die folgenden Erkenntnisse gewonnen...
+Ich habe als Fazit gelernt, dass es wichtig ist, bevor man sich auf Details konzentriert, die Hauptlogik des Problems zu verstehen und sich genug Zeit zu nehmen, dieses zu Bewerten. 
+Nur dadurch spart man sich viel Zeit in Form von unnötigen Trial and Error Zyklen, da man oft sich in Sackgassen verirrt. 
 
-Ein persönlich gewonnenes Fazit aus diesem Projekt ist es in Zukunft gezielt bei neuen Projekten vor der Entwicklung auf Bottlenecks zu achten und diese nach HPC-Prinzipien bewerten und ggfls. zu lösen.
+Als Beispiel: Man parsed einen Teil des Codes in performanten C-Code, sodass sich ein größerer compute intensiver Teil parallelisieren lässt. Später stellt man fest, dass sich der Code nicht wie erwartet umgesetzt werden kann oder die Performance sich sogar durch zu viele Eingriffe verschlechtert. In Form von:
 
-Als weitere Todos können folgende Punkte genannt werden:
+* Zu viele Schleifen, um die Daten vorzubereiten 
+* Viele unnötige Kopiervorgänge 
+* CPU Laufzeit-Stack kommt an seine Grenzen bei der eigentlichen Parallelisierung
 
-* Optimierung des C-Codes durch keine verwendung von interpretiertem Python
+Leider konnte ich das Single Precision Problem bei OpenCL nicht lösen, da mir leider nach unzähligen Stunden Recherche keine Lösung eingefallen ist und meine Skills leider an ihre Grenzen gestoßen sind. Ich bin mir aber sehr sicher, dass die Lösung nur noch minimal Aufwand ist. Und man somit korrekte Ergebnisse in single precision für die GPU erzielen kann.
+
+Eine gewonnene Erfahrung mit diesem Projekt ist es, in Zukunft gezielt bei neuen Projekten vor der Entwicklung auf Bottlenecks zu achten und diese nach HPC-Prinzipien bewerten und ggfls. vorab theoretisch zu lösen.
+
+__Weitere Schritte die für dieses Projekt aufgeführt werden können:__
+
+* Optimierung des C-Codes durch die saubere Einführen des Zufalls über CPP Header somit keine verwendung von interpretiertem Python ensteht
 * Entfernung von unnötigen Schleifen
 * Code weniger statisch für Daten machen
 
-
-
 === Aufwand
+Ich würde den Aufwand für dieses Projekt als sehr hoch einschätzen, sich erst mal ein geeignetes Thema zu überlegen. Das vollständige Verständnis eines Anwendungsproblemes hat mich am meisten Zeit und immer wieder Lehrgeld gekostet, da man immer wieder in Sackgassen gelaufen ist. 
+Es war viel Recherche notwendig und nochmals doppelt so viel Trial and Error. Die meisten Probleme, die ich hatte, kamen von der schlechten Dokumentation der verwendeten Bibliotheken. Zusätzlich findet man kaum gute Beispiele über Cython besonders wenn es zu komplexeren Einsatzbereichen kommt, obwohl es in nahezu allen Frameworks eingesetzt wird wie z. B. scikit-learn. Durch intensives Verstehen der Cython Dokumentation ist man dann nur wenig schlau geworden und musste daher immer wieder auf ein Google Forum Board zurückgreifen (see link:https://groups.google.com/g/cython-users[Forum]).
 
+Es war, denke ich, ein sehr gewagter Ansatz, da man sehr schnell den Überblick verlor und in nahezu jedem Schritt an die Grenzen der jeweiligen Bibliothek oder Programmiersprache gestoßen wurde. Dadurch wurde der Rattenschwanz immer länger und man wusste nicht mehr, was eigentlich wichtig war. Man wusste allerdings im Unterbewusstsein ab einem gewissen Punkt war es nicht mehr performant und verwarf die ursprüngliche Intention wieder.
 
+Zum Abschluss würde ich sagen, dass ich sehr viel lernen konnte, vor allem was hardwarenahe Entwicklung angeht und es mir eine große Wissenslücke aufgezeigt hat.
+Dennoch konnte ich durch dieses Projekt meine Skills in C, C++, Cython, OpenCL und Python deutlich verbessern. 
+
+Das Projektthema war ein eher triviales Thema und ich hätte mit einem komplexeren Thema wahrscheinlich größere Erfolge beim Ergebnis der Optimierung erzielen können. Ich denke allerdings, dass ich dadurch einen geringeren Lernerfolg gehabt hätte, da man es dadurch eher mit Problemen nicht HPC-Ursprungs zu tun bekommen hätte.
 
 == Appendix
 
 **List of Figures**
 Figure 1: <<Figure1>>
-
+Figure 2: <<Figure2>>
+Figure 3: <<Figure3>>
+Figure 4: <<Figure4>>
+Figure 5: <<Figure5>>
+Figure 6: <<Figure6>>
 **List of tables**
-// Table 1: <<Table1>>
+Table 1: <<Table1>>
 
 
-== Conventions
+=== Conventions
 
 The following conventions are used in the document and are specially marked:
 
@@ -299,26 +400,7 @@ The following conventions are used in the document and are specially marked:
 ** Todos are marked accordingly and usually highlighted in yellow. There should be no more todos in the final version.
 
 
-// ====
-// [NOTE]
-// Example
-// ====
-// [cols="1"]
-// |===
-// |Caution:{set:cellbgcolor:#b32929}
-
-// |Lorem Ipsum{set:cellbgcolor:none}
-// |===
-
-// [cols="1"]
-// |===
-// |@todo:{set:cellbgcolor:#b32929}
-
-// |Current representation will be inserted when final version is set.{set:cellbgcolor:none}
-// |===
-
-
-== License
+=== License
 MIT License
 
 Copyright (c) 2022 Paul Helstab <paul@helstab.cc>
