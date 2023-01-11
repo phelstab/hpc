@@ -198,6 +198,7 @@ python main.py
 ```sh
 # Asciidoc Vorlage erstellt von @phelstab
 # Erstellung eines PDFs aus der README.adoc
+brew install asciidoctor
 asciidoctor-pdf README.adoc
 ```
 == Lösungsansatz
@@ -337,6 +338,12 @@ Hier sieht man wenig überraschend, dass es teuer ist, wenn OpenCL zunächst Buf
 .OpenCL double precision auf CPU
 image::opencl_cpu.png[]
 
+
+Hier sieht man die Cython Debugger Ansicht als HTML. Gelb markiert Python Code, der interpretiert werden muss. Falls gelb schwach markiert ist, so wird ein geringer Teil in C interpretiert. Man sieht hier, dass der compute Part vollständig in C kompiliert wurde und aktuell sequenziell durchiteriert.
+[#Figure7]
+.Python vs C-Code
+image::python_vs_c.png[]
+
 == Fazit
 Ich habe als Fazit gelernt, dass es wichtig ist, bevor man sich auf Details konzentriert, die Hauptlogik des Problems zu verstehen und sich genug Zeit zu nehmen, dieses zu Bewerten. 
 Nur dadurch spart man sich viel Zeit in Form von unnötigen Trial and Error Zyklen, da man oft sich in Sackgassen verirrt. 
@@ -377,6 +384,7 @@ Figure 3: <<Figure3>>
 Figure 4: <<Figure4>>
 Figure 5: <<Figure5>>
 Figure 6: <<Figure6>>
+Figure 7: <<Figure7>>
 **List of tables**
 Table 1: <<Table1>>
 
