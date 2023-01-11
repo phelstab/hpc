@@ -3,6 +3,10 @@
         "omp.h": "c",
         "stdio.h": "c",
         "_stdio.h": "c",
-        "immintrin.h": "c"
+        "immintrin.h": "c",
+        "iostream": "cpp",
+        "random": "cpp",
+        "iterator": "cpp",
+        "chrono": "cpp"
     }
 }

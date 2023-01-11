@@ -1,3 +1,43 @@
+from setuptools import Extension, setup
+from Cython.Build import cythonize
+from Cython.Compiler import Options
+
+
+
+from Cython.Build import cythonize
+
+# set gcc to gcc-12
+# import os
+# os.environ["CC"] = "gcc-12"
+
+extensions = [
+    Extension("mc_cython_seq", ["mc_cython_seq.pyx"]),
+    # Extension("mc_cython_opt_rndm", ["mc_cython_opt_rndm.pyx"]),
+    # Extension("rect", ["rect.pyx"]),
+    # # simd-intrinsics test
+    # Extension("mc_cython_opt_ocl_randm", ["mc_cython_opt_ocl_randm.pyx"]),
+    # omp
+    # Extension("opencl_test", ["opencl_test.pyx"]),
+    # Extension("omp_test", ["omp_test.pyx"],
+    # extra_compile_args=["-fopenmp"],
+    # extra_link_args=["-fopenmp"],
+    # ),
+    # Extension("mc_cython_omp", ["mc_cython_omp.pyx"],
+    # extra_compile_args=["-fopenmp"],
+    # extra_link_args=["-fopenmp"],
+    # ),
+    # # omp + simd
+    # Extension("mc_cython_opt_ocl_randm_omp", ["mc_cython_opt_ocl_randm_omp.pyx"],
+    # extra_compile_args=["-fopenmp"],
+    # extra_link_args=["-fopenmp"],
+    # ),
+]
+
+setup(
+    ext_modules=cythonize(extensions),
+)
+
+
 # from distutils.core import setup
 # from Cython.Build import cythonize
 # from distutils.extension import Extension
@@ -45,35 +85,3 @@
 # extra_compile_args=["-O3", "-ffast-math", "-march=native","-Xpreprocessor", "-fopenmp"],
 # extra_link_args=["-Xpreprocessor", "-fopenmp"],
 # ),
-
-from setuptools import Extension, setup
-from Cython.Build import cythonize
-from Cython.Compiler import Options
-
-
-
-from Cython.Build import cythonize
-
-# set gcc to gcc-12
-import os
-os.environ["CC"] = "gcc-12"
-
-extensions = [
-    Extension("mc_cython_seq", ["mc_cython_seq.pyx"]),
-    Extension("mc_cython_omp", ["mc_cython_omp.pyx"],
-    extra_compile_args=["-fopenmp"],
-    extra_link_args=["-fopenmp"],
-    ),
-    Extension("mc_cython_simd", ["mc_cython_simd.pyx"],
-    extra_compile_args=["-fopenmp"],
-    extra_link_args=["-fopenmp"],
-    ),
-    Extension("omp_test", ["omp_test.pyx"],
-    extra_compile_args=["-fopenmp"],
-    extra_link_args=["-fopenmp"],
-    ),
-]
-
-setup(
-    ext_modules=cythonize(extensions),
-)

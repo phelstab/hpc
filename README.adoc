@@ -1,6 +1,6 @@
 //### own attributes ###
 :ComponentName: Scientific Computing
-:SystemName: High performance computing 
+:SystemName: High-performance computing 
 
 
 //### Asciidoc attributes ####
@@ -16,7 +16,7 @@
 :icons: font
 :hardbreaks:
 :nofooter:
-
+:hide-uri-scheme:
 :imagesdir: images/
 :logo: image:hft.png[100,100] 
 
@@ -41,7 +41,7 @@ Document information
 [cols="1,1"]
 |===
 |Document Type{set:cellbgcolor:#b32929}
-|Concept{set:cellbgcolor:none}
+|HPC concept{set:cellbgcolor:none}
 
 |Author{set:cellbgcolor:#b32929}
 |Paul H. {set:cellbgcolor:none}
@@ -50,10 +50,10 @@ Document information
 |-{set:cellbgcolor:none}
 
 |Status{set:cellbgcolor:#b32929}
-|Work in progress{set:cellbgcolor:none}
+|work in progress{set:cellbgcolor:none}
 
 |Classification of Information{set:cellbgcolor:#b32929}
-|Open Source{set:cellbgcolor:none}
+|open source{set:cellbgcolor:none}
 
 |Location{set:cellbgcolor:#b32929}
 |GitHub{set:cellbgcolor:none}
@@ -68,6 +68,11 @@ Change History
 |Author{set:cellbgcolor:#b32929}
 |Change{set:cellbgcolor:#b32929}
 
+|1.1 {set:cellbgcolor:none}
+|10.01.2023
+|phelstab
+|code formatting + docs
+
 |1.0 {set:cellbgcolor:none}
 |11.12.2022
 |phelstab
@@ -75,33 +80,86 @@ Change History
 |===
 
 
-References
+References and helpful links
 [cols="1,1,1"]
 |===
 |Title {set:cellbgcolor:#b32929}
 |DOI{set:cellbgcolor:#b32929}
 |Source {set:cellbgcolor:#b32929}
 
-|Example{set:cellbgcolor:none}
+|Cython Docs{set:cellbgcolor:none}
 |-
-|https://example.org
+|https://stackoverflow.com/questions/62249186/how-to-use-prange-in-cython
 
+|Intel Docs to Cython {set:cellbgcolor:none}
+|-
+|https://www.intel.com/content/www/us/en/developer/articles/technical/thread-parallelism-in-cython.html
+
+|Cython Blog post{set:cellbgcolor:none}
+|-
+|https://nealhughes.net/parallelcomp2/
 |===
 
 
 
-== Introduction
-Lorem
+== Motivation
+Die Motivation für das Modul HPC stammt aus meiner aktuellen Bachelor thesis, die sich mit dem Thema __Agenten basierte interaktive diskrete event simulationen für die untersuchung von auftrenden deterministische anomalien auf referenzmärkten mit unterschiedlichen marktplatz gebühren__, beschäftigt. Marcos Lopez de Prado, ein Quantitative Finance Professor an der University of California, San Diego, spricht in seinem Buch Advances in Financial Machine Learning davon, dass quantitative finance als eines der am schnellsten an Bedeutung gewinnenden Disziplinen in der Finanzwelt angesehen wird, da es immer weniger menschliche Entscheidungen in der Finanzwelt gibt. Firmen wie Citadel, Optiver, Two Sigma, Jane Street, etc. sind nur einige der Firmen, die sich mit quantitative finance beschäftigen und daraus Milliardengewinne erzielen. Dabei ist High Frequency Trading (HFT) ein sehr wichtiger Teil der quantitative finance und wird von diesen Firmen genutzt, um Gewinne zu erzielen mit der Strategie, dass schneller zu sein als andere es sind (see link:https://youtu.be/8uAW5FQtcvE[HPC bei Optiver]) oder sehr großen Schaden innerhalb von wenigen Sekunden zu verursachen .
+
+Monte Carlo Simulationen sind ein wichtiges Tooling für Quants und wird besonders im Risikomanagement verwendet, da sie es ermöglichen Risiken simulativ, zu quantifizieren und somit schnelle Entscheidungen treffen besonders auf Märkten die sich sehr schnell bewegen.  wenn Personen wie z. B. Navinder Singh Sarao die Möglichkeit erhalten (see link:https://de.wikipedia.org/wiki/Flash_Crash[HPC bei Optiver]), ist es wichtig, dass die Monte Carlo Simulation eine hochperformante durchlaufzeit erzielt.
 
 
-== Description
-=== Python Implementation Installation
+
+
+== Definition und Problemstellung
+Python bietet dabei die Möglichkeit, sehr schnell Code zu schreiben und durch Bibliotheken wie matplotlib und plotly sehr schnell visualisieren zu können. Allerdings ist Python nicht für HPC (GIL lässt nur ein Thread parallel ausführen) und somit auch nicht für HFT geeignet. Durch die Nutzung von Cython ist es möglich Python Code in C zu kompilieren und somit die Performance enorm zu steigern da zum einen Python Code precompiled ist und zum anderen durch die Nutzung von C, mit OpenMP, OpenCL, SIMD-Instruktionen, etc. hochperformant ausgeführt werden kann.
+
+Aus diesem Grund wird durch dieses Projekt versucht die Vorteile der Cython Programmiersprache zu nutzen um die Performance von Monte Carlo Simulationen durch C code und HPC-Paradigmen zu steigern. Nach dem compute intensive Teil der Simulation, werden die Daten "zurück" in Python übergeben um dort mit den bekannten Python Bibliotheken weiter verarbeitet und visualisieren zu können.
+
+=== Hardware specs
+*MacBook Pro 13" 2018*
 
 ```sh
-# Python 3.7 recommended
-# Update pip and create venv with example name lambda
+# CPU info
+sysctl -n machdep.cpu.brand_string
+#Intel(R) Core(TM) i5-8259U CPU @ 2.30GHz
+```
+
+*Meine CPU specs*  (link:https://ark.intel.com/content/www/de/de/ark/products/134899/intel-core-i5-8259u-processor-6m-cache-up-to-3-80-ghz.html[ Source ])
+
+Anzahl der Kerne 4
+Anzahl der Threads 8
+Max. Turbo-Taktfrequenz 3.80 GHz
+Intel® Turbo-Boost-Technik 2.0 Taktfrequenz‡ 3.80 GHz
+Grundtaktfrequenz des Prozessors 2.30 GHz
+Cache 6 MB Intel® Smart Cache
+Bus-Taktfrequenz 4 GT/s
+Verlustleistung (TDP) 28 W
+Frequenz der konfigurierbaren TDP-down 1.10 GHz
+Konfigurierbare TDP-down 20 W
+Befehlssatzerweiterungen Intel® SSE4.1, Intel® SSE4.2, Intel® AVX2
+Innovative technische Funktionen
+Intel® Optane™ Speicher unterstützt ‡ Ja
+Intel® Speed Shift Technology Ja
+Intel® Turbo-Boost-Technik‡ 2.0
+Intel® Hyper-Threading-Technik ‡ Ja
+Intel® TSX-NI Nein
+Intel® 64 ‡ Ja
+Befehlssatz 64-bit
+Befehlssatzerweiterungen Intel® SSE4.1, Intel® SSE4.2, Intel® AVX2
+Intel® My WiFi Technologie Ja
+Ruhezustände Ja
+Erweiterte Intel SpeedStep® Technologie Ja
+Thermal-Monitoring-Technologien Ja
+Intel® Flex-Memory-Access Ja
+Intel® Identity-Protection-Technik ‡ Ja
+
+=== Python setup
+
+```sh
+# Python 3.9.13 recommended
+# Update pip and create venv with example name venv_lambda
 python -m pip install --upgrade pip
-python -m venv lambda
+python -m venv venv_lambda
 
 # Activate venv on Linux
 source lambda/bin/activate
@@ -115,25 +173,114 @@ source lambda/bin/activate
 
 # Install libs
 pip install -r requirements.txt
-pip install -r requirements-dev.txt
-
-# Optional installs
-pip install ipykernel
-python -m ipykernel install --user --name=lambda
-
-# Run and install in root folder
-pip install -e .
 ```
 
-=== C Implementation Installation
+=== C setup
 
 ```sh
-# Lorem Ipsum
-
+# Test if openmp is installed (unix only)
+gcc -fopenmp multi_test.c -o multi_test
+./multi_test
 ```
 
+=== Commands
+```sh
+# Decompiler use flag --cplus, when compiling with cpp headers
+cython -a x.pyx 
+# Compile .pyx cython
+python setup.py build_ext --inplace
+# Run our test
+python main.py
+```
 
-=== Conventions
+== Lösungsansatz
+Lösungsansatz (1 Seite)
+
+[#Figure1]
+// .Inspiration for this Project
+// image::Idea.png[]
+
+- Possible use of OpenCL 
+- Possible use of OpenMP
+- Possible use of SIMD-Intrinsics
+- C code optimization with GCC
+- c++ code optimization with GCC
+- Benchmarking of the different implementations
+
+// **#Example 1(#****#<here overview diagram as PlantUML>)****:#**
+
+
+
+// #The following form of representation can be used:#
+// [#Table1]
+// .Configuration parameters
+// [cols="1,1,1,1"]
+// |===
+// |Parameter{set:cellbgcolor:#b32929}
+// |Value rangeExpression{set:cellbgcolor:#b32929}
+// |Intend {set:cellbgcolor:#b32929}
+// |Example {set:cellbgcolor:#b32929}
+
+// |MinMaxParameter{set:cellbgcolor:none}
+// |-1 to 9999{set:cellbgcolor:none}
+// |Used in the [Component] for setting the lower / upper limit. The separator between minimum and maximum is the pipe symbol ‚\|‘{set:cellbgcolor:none}
+// |<MinMaxParameter>1\|999</MinMaxParameter>{set:cellbgcolor:none}
+
+// |{set:cellbgcolor:none}
+// |{set:cellbgcolor:none}
+// |{set:cellbgcolor:none}
+// |{set:cellbgcolor:none}
+// |===
+
+
+== Implementation
+Implementierung inklusive Schwierigkeiten (1-2 Seiten)
+
+
+=== Step by Step
+
+
+
+=== Problem Bibliothek
+
+* Der größte Bottleneck ist leider kaum HPC kompatibel aufgrund von deterministischem Chaos
+* Problem mit SIMD
+* Problem mit OpenMP
+* Problem mit MPI
+* Problem mit OpenCL
+
+== Bewertung
+Bewertung des Ansatzes und der performance-limitierenden Faktoren (1-2 Seiten)
+
+Besonders interessant war zu sehen das bestimmte Python Bibliotheken zu denen auch weit verbreitete Bibliotheken wie Numpy, Math etc. gehören ineffizient sind und sich durch Hardwarenahen C-code ersetzen lassen. 
+
+== Fazit
+Wir haben durch das Projekt die folgenden Erkenntnisse gewonnen...
+
+Ein persönlich gewonnenes Fazit aus diesem Projekt ist es in Zukunft gezielt bei neuen Projekten vor der Entwicklung auf Bottlenecks zu achten und diese nach HPC-Prinzipien bewerten und ggfls. zu lösen.
+
+Als weitere Todos können folgende Punkte genannt werden:
+
+* Optimierung des C-Codes durch keine verwendung von interpretiertem Python
+* Entfernung von unnötigen Schleifen
+* Code weniger statisch für Daten machen
+
+
+
+=== Aufwand
+
+
+
+== Appendix
+
+**List of Figures**
+Figure 1: <<Figure1>>
+
+**List of tables**
+// Table 1: <<Table1>>
+
+
+== Conventions
 
 The following conventions are used in the document and are specially marked:
 
@@ -170,54 +317,26 @@ The following conventions are used in the document and are specially marked:
 // |Current representation will be inserted when final version is set.{set:cellbgcolor:none}
 // |===
 
-=== Architecture
 
+== License
+MIT License
 
-[#Figure1]
-.Inspiration for this Project
-image::Idea.png[]
+Copyright (c) 2022 Paul Helstab <paul@helstab.cc>
 
-- Implementation in Seqeuential C and Sequential Python
-- Implementation in High Performance C and High Performance Python
-- Vectorization of the HHI calculation
-- Sequential parts with SIMD intrinsics
-- csv ascii data vs HDF5 data
-- try to optimize memory access
-- try to optimize cache access
-- Parallelization with OpenMP and MPI (Show in Directed Acyclic Graphs) 
-- Possible use of OpenCL computation
-- Benchmarking of the different implementations
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-// **#Example 1(#****#<here overview diagram as PlantUML>)****:#**
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-
-
-// #The following form of representation can be used:#
-// [#Table1]
-// .Configuration parameters
-// [cols="1,1,1,1"]
-// |===
-// |Parameter{set:cellbgcolor:#b32929}
-// |Value rangeExpression{set:cellbgcolor:#b32929}
-// |Intend {set:cellbgcolor:#b32929}
-// |Example {set:cellbgcolor:#b32929}
-
-// |MinMaxParameter{set:cellbgcolor:none}
-// |-1 to 9999{set:cellbgcolor:none}
-// |Used in the [Component] for setting the lower / upper limit. The separator between minimum and maximum is the pipe symbol ‚\|‘{set:cellbgcolor:none}
-// |<MinMaxParameter>1\|999</MinMaxParameter>{set:cellbgcolor:none}
-
-// |{set:cellbgcolor:none}
-// |{set:cellbgcolor:none}
-// |{set:cellbgcolor:none}
-// |{set:cellbgcolor:none}
-// |===
-
-
-== Appendix
-
-**List of Figures**
-Figure 1: <<Figure1>>
-
-**List of tables**
-// Table 1: <<Table1>>
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
