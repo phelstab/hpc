@@ -330,8 +330,7 @@ Hier sieht man leider das Ergebnis der nach single precision (float32) formatier
 .OpenCL single precision problem
 image::single_precision_problem.png[]
 
-
-Hier sieht man wenig überraschend, dass es teuer ist, wenn OpenCL zunächst Buffern muss und die Daten auf die CPU kopiert. Es ist ein wenig ärgerlich bezüglich des Problems single precision problems, ich hätte gerne die Performance mit der GPU beobachtet, da ich denke, dass hier die Performance für diese Simulation vor allem im Hinblick auf Skalierung den größten Vorteil hätte.
+Hier sieht man wenig überraschend, dass es teuer ist, wenn OpenCL zunächst Buffern muss um die Daten auf die CPU zu kopieren. Es ist ein wenig ärgerlich bezüglich des single precision problems, da ich gerne die Performance mit der GPU beobachtet hätte, da ich denke, dass hier die Performance für diese Simulation vor allem im Hinblick auf Skalierung den größten Vorteil bringen würde.
 [#Figure5]
 .OpenCL double precision auf CPU
 image::opencl_cpu.png[]
