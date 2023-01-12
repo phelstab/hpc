@@ -273,7 +273,6 @@ Erfolgreich umgesetzt. Allerdings hatte ich beim parsen zu single precision Prob
 Die verwendung von SIMD-Intrinsics ist an vielen stellen als Codeleiche zu finden. Allerdings gab es für mich bei diesem Ansatz keine sinvolle Möglichkeit SIMD-Intrinsics einzusetzen, da vektorisierung an vielen punkten keine performance Vorteil ergeben hätte. Values müssten entweder in Schleifen auf Kosten der performanz vorbereitet werden oder es war aufgrund der Codelogik nicht möglich. Somit wurde das projekt abgebrochen.
 
 == Bewertung
-Bewertung des Ansatzes und der performance-limitierenden Faktoren (1-2 Seiten)
 
 Besonders interessant war, sehen zu können, dass bestimmte Python Bibliotheken, zu denen auch weit verbreitete Bibliotheken wie Numpy, Math etc. gehören, nicht für effiziente Aufgaben bestimmt sind, allerdings sich durch Hardwarenahes C effizient ersetzen lässt. Dieser Punkt stellte sich als das größte Bottleneck heraus.
 
