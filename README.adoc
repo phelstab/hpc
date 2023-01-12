@@ -202,7 +202,7 @@ brew install asciidoctor
 asciidoctor-pdf README.adoc
 ```
 == Lösungsansatz
-Mein Lösungsansatz ist es, die Monte Carlo Simulation zunächst sehr quick and dirty in Python zu implementieren, um es anschließend im Step-by-Step Ansatz optimieren zu können. Zunächst habe ich eine Architektur entwickelt, in dem sich Monte-Carlo Simulationen basierend auf der Volatilität der letzten N Tagen eines Wertpapieres (daten von yahoo finance) mit dem Startwert den letzten gehandelten Preis (closing price) berechnen und plotten lassen.
+Mein Lösungsansatz ist es, die Monte Carlo Simulation zunächst sehr quick and dirty in Python zu implementieren, um es anschließend im Step-by-Step Ansatz optimieren zu können. Zunächst habe ich eine Anwendung entwickelt, bei der sich Monte-Carlo Simulationen, basierend auf der Volatilität, den letzten N Tagen eines Wertpapieres (Datenanbieter ist yahoo finance) und dem zuletzt gehandelten Preis als Tages Startwert (closing price), berechnen und plotten lassen.
 
 [#Figure1]
 .Architektur der Anwendung und Simulation 
@@ -222,7 +222,7 @@ FOR x in RANGE(0, num_simulations, 1)::
 ENDFOR::
 ----
 
-Dieser Teil ist der compute intensive Teil der Simulation und muss vollständig in C geschrieben sein, sodass verschiedene HPC-Paradigmen angewendet werden können, dadurch ist man zunächst einmal verpflicht, alle bekannten Pythonbibliotheken wie Numpy, Math, Time, etc. herunterzubrechen, um sie in C erneut zu implementieren. Die innere Schleife ist deterministisches Chaos und kann daher nicht parallelisiert werden.
+Dieser Teil ist der compute intensive Teil der Simulation und muss vollständig in C geschrieben sein, sodass verschiedene HPC-Paradigmen angewendet werden können. Dadurch ist man zunächst einmal verpflicht, alle bekannten Pythonbibliotheken wie Numpy, Math, Time, etc. herunterzubrechen, um sie in C erneut zu implementieren. Die innere Schleife ist deterministisches Chaos und kann nicht parallelisiert werden.
 
 [#Figure6]
 .Durchlauf, Datenpunkte und plot der Simulation 
@@ -231,7 +231,7 @@ image::simulation.png[]
 === Benchmarking
 Als Benchmarking definiere ich die reine computation Zeit der Monte Carlo Simulation. Das bedeutet, ich übergebe an den Cython Wrapper die Anzahl der Tage, die simuliert werden sollen, die Anzahl der Simulationen, den letzten gehandelten Preis und eine Liste mit allen Preisen der letzten N Tage.
 
-Sobald diese Parameter übergeben wurden, wird die Monte Carlo Simulation ausgeführt und die computation time gemessen, bis ein 2-dimensionaler Array mit den Simulationen von der Runtime Logik zurückgegeben wird und in Python mit Matplotlib geplotted werden kann.
+Sobald diese Parameter übergeben wurden, wird die Monte Carlo Simulation ausgeführt und die computation time gemessen. Die Zeit wird gestoppt, sobald der 2-dimensionaler Array mit den Simulationen von der Runtime Logik zurückgegeben wird und in Python mit Matplotlib geplotted werden kann.
 
 
 == Implementation
@@ -244,11 +244,11 @@ Sobald diese Parameter übergeben wurden, wird die Monte Carlo Simulation ausgef
 . Precompiling des Python codes in Cython über die .pyx (anschließend Benchmarking)
 . Python funktionen in natives C überführen
 
-Als ich dachte, den Code nahezu komplett in C überführt zu haben, tauchte das erste Problem mit der Berechnung des Zufalls auf. Da die Berechnung des Zufalls in C sehr komplex ist, habe ich mich dazu entschieden, die Berechnung des Zufalls so weit es geht, herunter zu brechen. Leider musste ich dabei auf die Systemnanosekunden Funktion von Python zurückgreifen, da ich keine andere Möglichkeit gefunden habe, um saubere Seeding für die Zufallszahlengenerierung hochperformant zu erhalten (meine C-Implementierung war zu langsam).
+Nachdem ich nahezu vollständig Python nach C geparsed hatte, tauchte das erste Problem bei der Berechnung des Zufalls auf. Da die Berechnung des Zufalls in C alles andere als trivial ist, habe ich mich dazu entschieden, die Berechnung des Zufalls so weit wie nur möglich in C zu implementieren. Leider musste ich dabei auf die Systemnanosekunden Funktion von Python zurückgreifen, da ich keine andere Möglichkeit gefunden hatte, um saubere Seeding für die Zufallszahlengenerierung hochperformant zu erhalten (meine C-Implementierung war aus mir unerklärlichen Gründen zu langsam und seeds wurden ungewollt redundant erstellt).
 
-Ein Versuch, den Zufall über CPP Header zu generieren, war leider nicht teilweise erfolgreich obwohl alle Funktionen sauber implementiert waren, geriet ich an irgendeiner Stelle in einen Infinite Loop und der Rechner freezed (ist als Codeleiche noch zu finden und kann gerne ausprobiert werden:D). Ich denke, dass ich dort allerdings sehr nah am Ziel war, allerdings meine CPP Kenntnisse noch nicht ausgereicht hatten, um das Problem in nicht wochenlanger Arbeit gelöst zu bekommen. Dennoch war es mir möglich, über einen Workaround auf CPP Code in Cython zurückzugreifen, was für zukünftige Projekte sehr hilfreich sein wird und sich mehr Zeit ergibt, sich damit ausgiebig zu beschäftigen.
+Ein Versuch, den Zufall über CPP Header zu generieren, war leider nur teilweise erfolgreich obwohl alle Funktionen sauber implementiert waren, geriet ich an irgendeiner Stelle in einen infinite Loop und der Rechner freezed (ist als Codeleiche noch zu finden und kann gerne ausprobiert werden:D). Ich denke, dass ich dort allerdings sehr nah am Ziel war, allerdings meine CPP und Computerarchitektur Kenntnisse noch nicht ausgereichten, um das Problem in nicht wochenlanger Arbeit gelöst zu bekommen. Dennoch war es mir möglich, über einen Workaround auf CPP Code in Cython zurückzugreifen, was für zukünftige Projekte sehr hilfreich sein kann und mehr Zeit vorhanden ist, sich mit Details zu beschäftigen.
 
-Da der Code allerdings vollständig in C überführt werden muss, um den GIL deaktivieren zu können, musste ich den ersten Kompromiss eingehen, die Zufälle local vorzugenerieren um diese dann im HPC Part für die Berechnung verwenden zu können. Dies kostet mich allerdings num_days * num_simulations an Iterationen.
+Da der Code allerdings vollständig in C überführt werden muss, um den GIL deaktivieren zu können, musste ich den ersten Kompromiss eingehen, die Zufälle Lokal vorzugenerieren um diese dann wiederum im eigentlichen HPC Part für die Berechnung verwenden zu können. Dies kostet mich im Moment allerdings an einer Stelle, num_days * num_simulations an Iterationen.
 
 Anschließend wollte ich die Performance der Monte Carlo Simulation durch die Nutzung von 
 HPC-Paradigmen und Frameworks steigern. Dazu zähle ich in der Theorie z. B.:
@@ -259,24 +259,23 @@ HPC-Paradigmen und Frameworks steigern. Dazu zähle ich in der Theorie z. B.:
 ** Obsoleszieren von unnötigen Funktionen
 ** Obsoleszieren von unnötigen Variablen
 
-
 * OpenMP (Cython Cython.parallel Lib)
 ** Parallelierung von Schleifen
-Konnte erfolgreich umgesetzt werden, allerdings kaum Performance Vorteile aufgrund von keiner verbesserten memory performance.
+Konnte erfolgreich umgesetzt werden, allerdings kaum Performance Vorteile aufgrund geschuldetem memory bottleneck.
 
 * OpenCL (PyOpenCL)
 ** Compute intensive Berechnungen auf der GPU (Memory vorteile ausnutzen)
-Erfolgreich umgesetzt, allerdings hatte ich mir single precision Probleme bei der Ergebnisqualität starke Probleme, daher läuft das ganze auf double precision und ist daher unnötige Arbeit gewesen, da wie wir Wissen, die meisten GPUs keine double precision unterstützen.
+Erfolgreich umgesetzt. Allerdings hatte ich beim parsen zu single precision Probleme mit der Ergebnisqualität. Daher läuft das ganze auf double precision und somit nur auf der CPU. Dadurch ist OpenCL zum Teil gescheitert, da wie wir Wissen, die meisten GPUs keine double precision unterstützen.
 
 * SIMD-Intrinsics
 ** Berechnungen in Vektoren (z. B. 2x float oder 4x float) um die Performance zu steigern
 
-Die verwendung von SIMD-Intrinsics ist an vielen stellen als Codeleiche zu finden. Allerdings gab es für mich bei diesem Ansatz keine sinvolle Möglichkeit SIMD-Intrinsics einzusetzen, da vektorisierung an vielen punkten keine performance Vorteil ergeben hätte da man die Values wieder aufwendig in Schleifen vorbereiten hätten müssen.
+Die verwendung von SIMD-Intrinsics ist an vielen stellen als Codeleiche zu finden. Allerdings gab es für mich bei diesem Ansatz keine sinvolle Möglichkeit SIMD-Intrinsics einzusetzen, da vektorisierung an vielen punkten keine performance Vorteil ergeben hätte. Values müssten entweder in Schleifen auf Kosten der performanz vorbereitet werden oder es war aufgrund der Codelogik nicht möglich. Somit wurde das projekt abgebrochen.
 
 == Bewertung
 Bewertung des Ansatzes und der performance-limitierenden Faktoren (1-2 Seiten)
 
-Besonders interessant war zu sehen das bestimmte Python Bibliotheken zu denen auch weit verbreitete Bibliotheken wie Numpy, Math etc. gehören ineffizient sind und sich durch Hardwarenahen C-code ersetzen lassen. 
+Besonders interessant war, sehen zu können, dass bestimmte Python Bibliotheken, zu denen auch weit verbreitete Bibliotheken wie Numpy, Math etc. gehören, nicht für effiziente Aufgaben bestimmt sind, allerdings sich durch Hardwarenahes C effizient ersetzen lässt. Dieser Punkt stellte sich als das größte Bottleneck heraus.
 
 
 *Ergebnisse der definierten HPC paradigmen:*
