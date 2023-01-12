@@ -357,7 +357,7 @@ Eine gewonnene Erfahrung mit diesem Projekt ist es, in Zukunft gezielt bei neuen
 
 __Weitere Schritte die für dieses Projekt aufgeführt werden können:__
 
-* Optimierung des C-Codes durch die saubere Einführen des Zufalls über CPP Header somit keine verwendung von interpretiertem Python ensteht
+* Optimierung des C-Codes durch z. B. die saubere Einführen des Zufalls über CPP Header und keine verwendung von interpretiertem Python nötig ist
 * Entfernung von unnötigen Schleifen
 * Code weniger statisch für Daten machen
 
