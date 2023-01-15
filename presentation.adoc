@@ -1,0 +1,76 @@
+// :revealjs_customtheme: ./_adoc_assets/html-asciidoctor-default.css
+:revealjs_customtheme: https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/theme/serif.min.css
+
+
+= HPC mit Cython
+
+[%notitle]
+== Inhaltsverzeichnis
+toc::[]
+
+== Motivation
+. Erläuterung des Bedarfs an Hochleistungsrechnern für Monte-Carlo-Simulationen
+. Beschreibung des spezifischen Problems oder der Anwendung, die behandelt wird
+
+
+== Cython
+. Erläuterung, was Cython ist und wie es sich von Python unterscheidet
+. Beschreibung der Vorteile der Verwendung von Cython für HPC-Simulationen
+
+== Implementierung
+
+
+=== Risikomanagement mit Monte-Carlo
+
+.  Numerisches Verfahren zur Risikoaggregation
+.. Eintrittswahrscheinlichkeiten von Ereignissen
+. Beliebt in der Finanzmathematik und Portfoliotheorie
+.. Stress-Testing
+.. Option Pricing
+... z. B. als Vergleich zum Black-Scholes Merton (BSM) model
+.. Investitionsrisiken
+
+
+=== Architektur
+
+[mermaid, svg]
+....
+graph TD
+    A[Get timeseries from YFinance]--> |21y * 252 trading days| B[Format DF to list] 
+    B--> C[Send list to .pyx]
+    C--> |Count time| D{Compute in Cython}
+    D --> |1000 simulations * 5292 = 5.292.000| D
+    D --> |Stop time| E[Send list to .py]
+    E --> F[Plot]
+....
+
+=== Pseudo Code
+
+
+
+
+== HPC
+. Überblick über die in der Simulation verwendeten HPC-Techniken
+. Diskussion, wie Cython zur Leistungsoptimierung eingesetzt wurde
+. Erläuterung der Verwendung von OpenMP, OpenCL und SIMD zur weiteren Leistungssteigerung
+. Benchmark-Ergebnisse zum Nachweis der Wirksamkeit der HPC-Techniken
+
+=== Cython
+=== OpenMP
+=== OpenCL
+=== SIMD
+
+=== Benchmark
+
+Image
+
+== Probleme und Limitationen
+. Erörterung von Problemen, die bei der Umsetzung und Optimierung aufgetreten sind
+. Erläuterung etwaiger Einschränkungen der derzeitigen Implementierung
+
+== Fazit
+
+. Zusammenfassung der wichtigsten Punkte des Vortrags
+. Bewertung der Wirksamkeit der verwendeten HPC-Techniken
+. Diskussion über zukünftige Arbeiten und mögliche Verbesserungen
+. Q&A
