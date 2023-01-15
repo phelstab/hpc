@@ -44,8 +44,22 @@ graph TD
     E --> F[Plot]
 ....
 
-=== Pseudo Code
+=== Monte-Carlo Pseudo Code 
 
+* Zufälle werden normalverteilt gezogen
+** mu = 0
+** sigma = (volatilität) über letzten (21 * 252) Tage
+
+[source,subs=+quotes]
+----
+rndm = random.normal(0, volatility)
+FOR x IN RANGE(0, 1000, 1)
+    FOR y IN RANGE(0, 252, 1)
+        IF y == 0
+            price[y] = last_price * (1 + rndm)
+        ELSE
+            price[y] = price[y-1] * (1 + rndm)
+----
 
 
 
